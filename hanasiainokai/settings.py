@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'app',
 
     #'sample_app.apps.SampleAppConfig', # Custom App
@@ -54,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', #追加
+#    'whitenoise.middleware.WhiteNoiseMiddleware', #追加
 ]
 
 ROOT_URLCONF = 'hanasiainokai.urls'
@@ -75,7 +76,11 @@ TEMPLATES = [
     },
 ]
 
+<<<<<<< HEAD
 WSGI_APPLICATION = 'hanasiainokai.wsgi.application'
+=======
+WSGI_APPLICATION = 'hanasiai.wsgi.application' #本番環境用
+>>>>>>> 521ba26176e9d6f15334e42ee909f99eab84ba20
 
 
 # Database

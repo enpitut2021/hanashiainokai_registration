@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    
+
     #'sample_app.apps.SampleAppConfig', # Custom App
     #'accounts.apps.AccountsConfig',    # 追加
 ]
@@ -136,7 +136,7 @@ try:
     from .local_settings import *
 except ImportError:
         pass
-    
+
 #追加
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']

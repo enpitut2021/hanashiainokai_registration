@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware', #追加
 ]
 
-ROOT_URLCONF = 'hanassiainokai.urls'
+ROOT_URLCONF = 'hanasiainokai.urls'
 
 TEMPLATES = [
     {

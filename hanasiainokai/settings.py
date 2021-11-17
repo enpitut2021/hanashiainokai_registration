@@ -42,23 +42,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'app',
-
-    #'sample_app.apps.SampleAppConfig', # Custom App
-    #'accounts.apps.AccountsConfig',    # 追加
+    
+#    'sample_app.apps.SampleAppConfig', # Custom App
+#    'accounts.apps.AccountsConfig',    # 追加
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', ###本番環境用###
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#    'whitenoise.middleware.WhiteNoiseMiddleware', #追加
 ]
 
-ROOT_URLCONF = 'hanasiainokai.urls'
+ROOT_URLCONF = 'app.urls'
 
 TEMPLATES = [
     {
@@ -76,11 +76,7 @@ TEMPLATES = [
     },
 ]
 
-<<<<<<< HEAD
-WSGI_APPLICATION = 'hanasiainokai.wsgi.application'
-=======
-WSGI_APPLICATION = 'hanasiai.wsgi.application' #本番環境用
->>>>>>> 521ba26176e9d6f15334e42ee909f99eab84ba20
+ WSGI_APPLICATION = 'hanasiai.wsgi.application' ###本番環境用###
 
 
 # Database
@@ -141,7 +137,7 @@ try:
     from .local_settings import *
 except ImportError:
         pass
-
+    
 #追加
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']

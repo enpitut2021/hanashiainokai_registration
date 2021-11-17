@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', ###本番環境用###
+    # 'whitenoise.middleware.WhiteNoiseMiddleware', ###本番環境用###
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
- WSGI_APPLICATION = 'hanasiai.wsgi.application' ###本番環境用###
+# WSGI_APPLICATION = 'hanasiai.wsgi.application' ###本番環境用###
 
 
 # Database

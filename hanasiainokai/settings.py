@@ -77,7 +77,9 @@ TEMPLATES = [
 
 if 'HEROKU' in os.environ:
     WSGI_APPLICATION = 'hanasiai.wsgi.application'
-    MIDDLEWARE += 'whitenoise.middleware.WhiteNoiseMiddleware'
+    # 'django.middleware.security.SecurityMiddleware' より後ろ、その他のミドルウェアよりも前に挿入
+    # https://qiita.com/ymhr1121/items/344c4eb300ab9972d0c2
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 
 # Database

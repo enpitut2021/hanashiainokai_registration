@@ -143,6 +143,24 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
         schedule.save()
         return redirect('mycalendar', year=date.year, month=date.month, day=date.day)
 
+class ToBot(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generic.CreateView):
+    """月間カレンダー、週間カレンダー、スケジュール登録画面のある欲張りビュー"""
+    template_name = 'app/tobot.html'
+    model = Schedule
+    date_field = 'date'
+    form_class = BS4ScheduleForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        week_calendar_context = self.get_week_calendar()
+        month_calendar_context = self.get_month_calendar()
+        context.update(week_calendar_context)
+        context.update(month_calendar_context)
+        return context
+
+    def form_valid(self, form):
+        pass
+
 class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
     """フォーム付きの月間カレンダーを表示するビュー"""
     template_name = 'app/month_with_forms.html'

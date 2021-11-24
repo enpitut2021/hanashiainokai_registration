@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from json import encoder
 from django.contrib.auth.models import User
 
 from .forms import RegistrationForm, LoginForm
@@ -10,15 +9,7 @@ from django.contrib.auth import authenticate, login, logout as django_logout
 from django.core.paginator import Paginator
 from django.core.validators import ValidationError
 
-from django.views import generic
-from . import mixins
-
 import base64
-
-import datetime
-from .forms import BS4ScheduleForm
-from .forms import SimpleScheduleForm
-from .models import Schedule
 
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
@@ -26,6 +17,15 @@ from rest_framework.views import APIView
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
+
+import datetime
+from django.shortcuts import redirect, render
+from django.views import generic
+from .forms import BS4ScheduleForm, SimpleScheduleForm
+from .models import Schedule
+from . import mixins
+
+from django.http.response import JsonResponse
 
 def login_user(request):
     params = {
@@ -95,11 +95,23 @@ class delete_schedule(DeleteView):
     schedule = get_object_or_404(Schedule, id = schedule_id)
     schedule.delete()
     return redirect('calendar')
- """
+"""
 
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""
     template_name = 'app/month.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        calendar_context = self.get_month_calendar()
+        context.update(calendar_context)
+        return context
+
+class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateView):
+    """スケジュール付きの月間カレンダーを表示するビュー"""
+    template_name = 'app/month_with_schedule.html'
+    model = Schedule
+    date_field = 'date'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -113,14 +125,6 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
     model = Schedule
     date_field = 'date'
     form_class = BS4ScheduleForm
-
-    """ def get(self, request, **kwargs):
-        if "query_param" in request.GET:
-            param_value = request.GET.get("query_param")
-            return param_value
-        else:
-            context = self.get_month_calendar()
-            return render(request, self.template_name, context) """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -143,8 +147,7 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
         schedule.save()
         return redirect('mycalendar', year=date.year, month=date.month, day=date.day)
 
-class ToBot(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generic.CreateView):
-    """月間カレンダー、週間カレンダー、スケジュール登録画面のある欲張りビュー"""
+class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.CreateView):
     template_name = 'app/tobot.html'
     model = Schedule
     date_field = 'date'
@@ -152,14 +155,26 @@ class ToBot(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generic.Cre
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        week_calendar_context = self.get_week_calendar()
+        day_calendar_context = self.get_day_calendar()
         month_calendar_context = self.get_month_calendar()
-        context.update(week_calendar_context)
+        context.update(day_calendar_context)
         context.update(month_calendar_context)
         return context
 
     def form_valid(self, form):
         pass
+    
+    def jsonSend(self, request):
+        day_calendar_context = self.get_day_calendar()
+        data = {}
+        for schedules in day_calendar_context.values:
+            for s in schedules:
+                data['start_time'] = s.start_time.strftime("G:i")
+                data['end_time'] = s.end_time.strftime("G:i")
+                data['summary'] = s.summary
+                data['description'] = s.description
+        json_data = {day_calendar_context.keys[0]: data}
+        return JsonResponse(json_data)
 
 class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
     """フォーム付きの月間カレンダーを表示するビュー"""
@@ -177,6 +192,6 @@ class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
         formset = context['month_formset']
         if formset.is_valid():
             formset.save()
-            return redirect('month_with_forms')
+            return redirect('app:month_with_forms')
 
         return render(request, self.template_name, context)

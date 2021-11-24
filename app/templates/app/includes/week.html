@@ -20,16 +20,15 @@
         {% endfor %}
     </tr>
     <tr>
-        {% for schedules in week_day_schedules.values %}        
+        {% for schedules in week_day_schedules.values %}
             <td>
                 {% for s in schedules %}
-                    {{ s.start_time }} - {{ s.end_time }}<br>
+                    {{ s.start_time|date:"G:i" }} - {{ s.end_time|date:"G:i" }}<br>
                     {{ s.summary }}<br>
-                    {{ s.description | linebreaks }}
+                    {{ s.description}}<br>
                     <a href="{% url 'delete' s.id %}">削除</a><br><br>
                 {% endfor %}
             </td>
-        
         {% endfor %}
     </tr>
     </tbody>

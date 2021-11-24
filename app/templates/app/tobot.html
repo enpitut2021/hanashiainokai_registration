@@ -1,15 +1,13 @@
 <table class="table" style="table-layout: fixed;">
     <tbody>
     <tr>
-        {% for schedules in week_day_schedules.values %}        
-            <td>
+        {% for schedules in day_schedules.values %}        
                 {% for s in schedules %}
-                    {{ s.start_time }} - {{ s.end_time }}<br>
-                    {{ s.summary }}<br>
-                    {{ s.description | linebreaks }}
-                {% endfor %}
-            </td>
-        
+                    {{ s.start_time|date:"G:i" }}
+                    {{ s.end_time|date:"G:i" }}
+                    {{ s.summary }}
+                    {{ s.description }}<br>
+                {% endfor %}        
         {% endfor %}
     </tr>
     </tbody>

@@ -18,4 +18,5 @@ urlpatterns = [
     path('month', views.MonthCalendar.as_view(), name='month'),
     path('month/<int:year>/<int:month>/', views.MonthCalendar.as_view(), name='month'),
     path('tobot/<int:year>/<int:month>/<int:day>/', views.ToBot.as_view(), name='tobot'),
+    path('', views.CalendarListAPIView.as_view(), name="calandar_data"),
 ]

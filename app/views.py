@@ -27,6 +27,16 @@ from . import mixins
 
 from django.http.response import JsonResponse
 
+#forAPI
+from rest_framework import generics
+
+from .models import App
+from .serializers import AppSerializer
+
+
+
+
+
 def login_user(request):
     params = {
         'login_form': LoginForm(),
@@ -195,3 +205,10 @@ class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
             return redirect('app:month_with_forms')
 
         return render(request, self.template_name, context)
+
+
+#ListAPIViewを継承したクラス
+
+class MeiboListAPIView(generics.ListAPIView):
+    queryset = App.objects.all()
+    serializer_class = AppSerializer

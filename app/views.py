@@ -165,15 +165,19 @@ class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.Crea
         pass
     
     def jsonSend(self, request):
-        day_calendar_context = self.get_day_calendar()
+        day_calendar_context = self.get_day_schedules()
+        s_list = []
         data = {}
-        for schedules in day_calendar_context.values:
+        for schedules in day_calendar_context['day_schedules'].values():
             for s in schedules:
-                data['start_time'] = s.start_time.strftime("G:i")
-                data['end_time'] = s.end_time.strftime("G:i")
+                data = {}
                 data['summary'] = s.summary
                 data['description'] = s.description
-        json_data = {day_calendar_context.keys[0]: data}
+                data['start_time'] = s.start_time
+                data['end_time'] = s.end_time
+                s_list.append(data)
+        date = list(day_calendar_context['day_schedules'].keys())[0]
+        json_data = {date: s_list}
         return JsonResponse(json_data)
 
 class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):

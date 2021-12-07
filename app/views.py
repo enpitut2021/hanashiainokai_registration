@@ -159,26 +159,28 @@ class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.Crea
         month_calendar_context = self.get_month_calendar()
         context.update(day_calendar_context)
         context.update(month_calendar_context)
+        context['last'] = list(context['day_schedules'].values())[0][-1]
+        # date = day_calendar_context['date'].strftime("%Y-%m-%d")
+        # s_list = []
+        # data = {}
+        # for schedules in day_calendar_context['day_schedules'].values():
+        #     for s in schedules:
+        #         data = {}
+        #         data['summary'] = s.summary
+        #         data['description'] = s.description
+        #         data['start_time'] = s.start_time.strftime("%H:%M")
+        #         data['end_time'] = s.end_time.strftime("%H:%M")
+        #         s_list.append(data)
+        # date = list(day_calendar_context['day_schedules'].keys())[0].strftime("%Y-%m-%d")
+        # self.json_data = {date: s_list}
+        # self.jsonSend()
         return context
 
     def form_valid(self, form):
         pass
     
-    def jsonSend(self, request):
-        day_calendar_context = self.get_day_schedules()
-        s_list = []
-        data = {}
-        for schedules in day_calendar_context['day_schedules'].values():
-            for s in schedules:
-                data = {}
-                data['summary'] = s.summary
-                data['description'] = s.description
-                data['start_time'] = s.start_time
-                data['end_time'] = s.end_time
-                s_list.append(data)
-        date = list(day_calendar_context['day_schedules'].keys())[0]
-        json_data = {date: s_list}
-        return JsonResponse(json_data)
+    # def jsonSend(self):
+    #     return JsonResponse(self.json_data)
 
 class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
     """フォーム付きの月間カレンダーを表示するビュー"""

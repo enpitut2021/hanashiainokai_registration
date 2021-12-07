@@ -1,14 +1,17 @@
-<table class="table" style="table-layout: fixed;">
-    <tbody>
-    <tr>
+{
+    "{{ date|date:"Y.m.d" }}": [
         {% for schedules in day_schedules.values %}
-                {% for s in schedules %}
-                    {{ s.start_time|date:"G:i" }}
-                    {{ s.end_time|date:"G:i" }}
-                    {{ s.summary }}
-                    {{ s.description }}<br>
-                {% endfor %}        
+            {% for s in schedules %}
+                {
+                    "summary": "{{ s.summary }}", 
+                    "description": "{{ s.description }}",
+                    "start_time": "{{ s.start_time|date:"G:i" }}",
+                    "end_time": "{{ s.end_time|date:"G:i" }}"
+                }
+                {% if s != last %}
+                    ,
+                {% endif %}
+            {% endfor %}
         {% endfor %}
-    </tr>
-    </tbody>
-</table>
+    ]
+}

@@ -32,10 +32,23 @@ class LoginForm(AuthenticationForm):
 
 class BS4ScheduleForm(forms.ModelForm):
     """Bootstrapに対応するためのModelForm"""
-
+    data = [
+            ('','部屋を選択'),
+            ('1', '勉強部屋1'),
+            ('2', '勉強部屋2'),
+            ('3', '勉強部屋3'),
+            ('4', '勉強部屋4'),
+            ('5', '勉強部屋5'),
+        ]
+    room = forms.ChoiceField(choices=data, required=True, widget=forms.Select(attrs={
+                'class': 'form-control',
+            }))
     class Meta:
         model = Schedule
-        fields = ('summary', 'description', 'start_time', 'end_time')
+        fields = ('summary', 'description', 'start_time', 'end_time'
+        , 'room'
+        )
+        
         widgets = {
             'summary': forms.TextInput(attrs={
                 'class': 'form-control',

@@ -18,4 +18,6 @@ urlpatterns = [
     path('month', views.MonthCalendar.as_view(), name='month'),
     path('month/<int:year>/<int:month>/', views.MonthCalendar.as_view(), name='month'),
     path('tobot/<int:year>/<int:month>/<int:day>/', views.ToBot.as_view(), name='tobot'),
+    path('month_with_schedule/',views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
+    path('month_with_schedule/<int:year>/<int:month>/',views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
 ]

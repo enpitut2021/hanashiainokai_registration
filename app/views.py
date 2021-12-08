@@ -201,3 +201,15 @@ class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
             return redirect('app:month_with_forms')
 
         return render(request, self.template_name, context)
+
+class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateView):
+    """スケジュール付きの月間カレンダーを表示するビュー"""
+    template_name = 'app/month_with_schedule.html'
+    model = Schedule
+    date_field = 'date'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        calendar_context = self.get_month_calendar()
+        context.update(calendar_context)
+        return context

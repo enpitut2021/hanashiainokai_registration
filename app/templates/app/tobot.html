@@ -6,7 +6,8 @@
                     "summary": "{{ s.summary }}", 
                     "description": "{{ s.description }}",
                     "start_time": "{{ s.start_time|date:"G:i" }}",
-                    "end_time": "{{ s.end_time|date:"G:i" }}"
+                    "end_time": "{{ s.end_time|date:"G:i" }}",
+                    "room": "{{ s.room }}"
                 }
                 {% if s != last %}
                     ,

@@ -10,7 +10,6 @@ class Schedule(models.Model):
     description = models.TextField('詳細な説明', blank=True)
     start_time = models.TimeField('開始時間', default=datetime.time(7, 0, 0))
     end_time = models.TimeField('終了時間', default=datetime.time(7, 0, 0))
-    room = models.CharField('勉強部屋', max_length=1)
     date = models.DateField('日付')
     created_at = models.DateTimeField('作成日', default=timezone.now)
 

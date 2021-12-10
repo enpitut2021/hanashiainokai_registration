@@ -91,6 +91,12 @@ class delete_schedule(DeleteView):
     date = datetime.date.today()
     success_url = reverse_lazy('mycalendar')
 
+""" def delete(request, schedule_id):
+    schedule = get_object_or_404(Schedule, id = schedule_id)
+    schedule.delete()
+    return redirect('calendar')
+"""
+
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""
     template_name = 'app/month.html'
@@ -154,10 +160,27 @@ class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.Crea
         context.update(day_calendar_context)
         context.update(month_calendar_context)
         context['last'] = list(context['day_schedules'].values())[0][-1]
+        # date = day_calendar_context['date'].strftime("%Y-%m-%d")
+        # s_list = []
+        # data = {}
+        # for schedules in day_calendar_context['day_schedules'].values():
+        #     for s in schedules:
+        #         data = {}
+        #         data['summary'] = s.summary
+        #         data['description'] = s.description
+        #         data['start_time'] = s.start_time.strftime("%H:%M")
+        #         data['end_time'] = s.end_time.strftime("%H:%M")
+        #         s_list.append(data)
+        # date = list(day_calendar_context['day_schedules'].keys())[0].strftime("%Y-%m-%d")
+        # self.json_data = {date: s_list}
+        # self.jsonSend()
         return context
 
     def form_valid(self, form):
         pass
+    
+    # def jsonSend(self):
+    #     return JsonResponse(self.json_data)
 
 class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
     """フォーム付きの月間カレンダーを表示するビュー"""

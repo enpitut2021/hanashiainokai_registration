@@ -145,3 +145,4 @@ cython_debug/
 /Pipfile.lock
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+db.sqlite3

@@ -26,6 +26,7 @@
                     {{ s.start_time|date:"G:i" }} - {{ s.end_time|date:"G:i" }}<br>
                     {{ s.summary }}<br>
                     {{ s.description}}<br>
+                    勉強部屋{{ s.room }}<br>
                     <a href="{% url 'delete' s.id %}">削除</a><br><br>
                 {% endfor %}
             </td>

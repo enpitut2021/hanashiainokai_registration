@@ -153,7 +153,8 @@ class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.Crea
         month_calendar_context = self.get_month_calendar()
         context.update(day_calendar_context)
         context.update(month_calendar_context)
-        context['last'] = list(context['day_schedules'].values())[0][-1]
+        if (context['day_schedules'].values()) == [[]]:
+            context['last'] = list(context['day_schedules'].values())[0][-1]
         return context
 
     def form_valid(self, form):

@@ -15,9 +15,19 @@ and open the template in the editor.
         <h1>Welcome to Siketai!!</h1>
         <div class="content-box">
             <h1> DiscordのURL</h1>
-            <p><a href="https://discord.gg/V79aWQS2QA" target="_new">ここをクリック！</a></p>
+            <p><a href="https://discord.gg/UhVZwKys2H" target="_new">ここをクリック！</a></p>
         </div>
-        <h2>概要</h2>
+        <div class="content-box">
+            <h1>作業会確認カレンダー</h1>
+            <p><a href="{% url 'mycalendar' %}?{{ user.username }}">こちらから日程を登録</a></p>
+        </div>
+        {% comment %} <div class="content-box"> {% endcomment %}
+            <img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/intro1.png" style = "display: block; margin: auto; width: 1000px;">
+        {% comment %} </div> {% endcomment %}
+        {% comment %} <div class="content-box"> {% endcomment %}
+            <img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/intro2.png" style = "display: block; margin: auto; width: 1000px;">
+        {% comment %} </div> {% endcomment %}
+        {% comment %} <h2>概要</h2>
         <div class="box30">
             <div class="box-title">シケタイについて</div>
             <p>サーバー本体とサーバー内に存在する『@sensei』という名前のbotがあなたの集団作業をサポートします</p>
@@ -81,11 +91,7 @@ and open the template in the editor.
             </td>
             </tr>
         </table>
-        </div>
-        <div class="calendar">
-        <h2>作業会確認カレンダー</h2>
-        <a href="{% url 'mycalendar' %}?{{ user.username }}">こちらから日程を登録</a>
-        </div>
+        </div> {% endcomment %}
     </body>
     <style>
         h1{

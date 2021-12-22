@@ -10,11 +10,31 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
     <title>カレンダー</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
 </head>
 <body>
-<img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/tutorial_1.png" style = "display: block; margin: auto; width: 1000px;">
-<img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/tutorial_2.png" style = "display: block; margin: auto; width: 1000px;">
-<div class="container" style="width: 1000px" mt-3>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">ヘルプ一覧</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="https://cdn.discordapp.com/attachments/864711400655945759/920547797147713537/Screen_Shot_2021-12-15_at_14.27.12.png" data-lightbox="group">主催者の方へ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://cdn.discordapp.com/attachments/864711400655945759/920547796791205958/Screen_Shot_2021-12-15_at_14.26.58.png" data-lightbox="group">参加者の方へ</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+<div class="container mt-3">
 {% block content %}
     <div class="row">
         <div class="col-md-3">

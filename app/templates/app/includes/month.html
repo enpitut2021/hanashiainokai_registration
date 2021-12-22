@@ -14,7 +14,7 @@
     {% for week in month_days %}
         <tr>
             {% for day in week %}
-                {% if now == day %}
+                {% if date == day %}
                     <td class="table-success">
                 {% else %}
                     <td>

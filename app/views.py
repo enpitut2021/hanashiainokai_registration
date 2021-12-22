@@ -113,7 +113,7 @@ class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateV
         context.update(calendar_context)
         return context
 
-class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generic.CreateView):
+class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, mixins.DayWithScheduleMixin, generic.CreateView):
     """月間カレンダー、週間カレンダー、スケジュール登録画面のある欲張りビュー"""
     template_name = 'app/mycalendar.html'
     model = Schedule
@@ -122,8 +122,11 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        day_calendar_context = self.get_day_calendar()
         week_calendar_context = self.get_week_calendar()
         month_calendar_context = self.get_month_calendar()
+        print(week_calendar_context)
+        context.update(day_calendar_context)
         context.update(week_calendar_context)
         context.update(month_calendar_context)
         return context

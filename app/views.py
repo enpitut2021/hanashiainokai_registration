@@ -40,7 +40,7 @@ def login_user(request):
         password2 = base64.b64encode(password.encode())
         if user is not None:
             login(request, user)
-            return redirect('index', username=username2, password=password2)
+            return redirect('index')
         else:
             params['login_form'].add_error(None, "ユーザ名またはパスワードが異なります")
             return render(request, 'app/login.html', params)
@@ -62,22 +62,22 @@ def registration_user(request):
         return redirect('login')
     return render(request, 'app/registration.html', params)
 
-def index(request, username, password):
-    username_index = username.split("'")
-    username = username_index[1]
-    username3 = base64.b64decode(username).decode()
+def index(request):
+    # username_index = username.split("'")
+    # username = username_index[1]
+    # username3 = base64.b64decode(username).decode()
 
-    password_index = password.split("'")
-    password = password_index[1]
-    password3 = base64.b64decode(password).decode()
+    # password_index = password.split("'")
+    # password = password_index[1]
+    # password3 = base64.b64decode(password).decode()
 
-    user = authenticate(username=username3, password=password3)
-    params = {
-        'user': user,
-    }
-    if user is None:
-        return redirect('login')
-    return render(request, 'app/index.html', params)
+    # user = authenticate(username=username3, password=password3)
+    # params = {
+    #     'user': user,
+    # }
+    # if user is None:
+    #     return redirect('login')
+    return render(request, 'app/index.html')
 
 def logout(request):
     django_logout(request)

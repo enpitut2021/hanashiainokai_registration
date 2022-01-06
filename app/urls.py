@@ -10,7 +10,7 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('registration', views.registration_user, name='registration'),
     path('delete/<int:pk>', views.delete_schedule.as_view(), name='delete'),
-    path('index', views.index, name='index'),
+    path('', views.index, name='index'),
     path('calendar', views.MyCalendar.as_view(), name='mycalendar'),
     path('mycalendar/<int:year>/<int:month>/<int:day>/', views.MyCalendar.as_view(), name='mycalendar'),
     path('month_with_forms', views.MonthWithFormsCalendar.as_view(), name='month_with_forms'),
@@ -20,4 +20,5 @@ urlpatterns = [
     path('tobot/<int:year>/<int:month>/<int:day>/', views.ToBot.as_view(), name='tobot'),
     path('month_with_schedule/',views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
     path('month_with_schedule/<int:year>/<int:month>/',views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
+    path('search/', views.ScheduleList.as_view(), name='search'),
 ]

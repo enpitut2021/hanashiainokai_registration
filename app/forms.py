@@ -39,15 +39,15 @@ class BS4ScheduleForm(forms.ModelForm):
             ('3', '勉強部屋3'),
             ('4', '勉強部屋4'),
             ('5', '勉強部屋5'),
-        ]
-    room = forms.ChoiceField(choices=data, required=True, widget=forms.Select(attrs={
+    ]
+
+    room = forms.ChoiceField(label='勉強部屋', choices=data, required=True, widget=forms.Select(attrs={
                 'class': 'form-control',
-            }))
+    }))
+
     class Meta:
         model = Schedule
-        fields = ('summary', 'description', 'start_time', 'end_time'
-        , 'room'
-        )
+        fields = ('summary', 'description', 'start_time', 'end_time', 'room')
 
         widgets = {
             'summary': forms.TextInput(attrs={

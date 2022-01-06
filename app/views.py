@@ -125,7 +125,7 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, mixins
         day_calendar_context = self.get_day_calendar()
         week_calendar_context = self.get_week_calendar()
         month_calendar_context = self.get_month_calendar()
-        print(week_calendar_context)
+        # print(week_calendar_context)
         context.update(day_calendar_context)
         context.update(week_calendar_context)
         context.update(month_calendar_context)
@@ -195,3 +195,6 @@ class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateV
         calendar_context = self.get_month_calendar()
         context.update(calendar_context)
         return context
+
+class ScheduleList(ListView):
+    model = Schedule

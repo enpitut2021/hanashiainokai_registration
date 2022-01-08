@@ -22,10 +22,10 @@ import datetime
 from django.shortcuts import redirect, render
 from django.views import generic
 from .forms import BS4ScheduleForm, SimpleScheduleForm
-from .models import Schedule
+from .models import Discord_User, Schedule
 from . import mixins
 
-from django.http.response import JsonResponse
+from operator import attrgetter
 
 def login_user(request):
     params = {
@@ -91,6 +91,25 @@ class delete_schedule(DeleteView):
     date = datetime.date.today()
     success_url = reverse_lazy('mycalendar')
 
+class Join(CreateView):
+    template_name = 'app/join.html'
+    model = Discord_User
+    fields = ['discord_name']
+ 
+    success_url = reverse_lazy('mycalendar')
+ 
+    def get_form(self):
+        form = super(Join, self).get_form()
+        form.fields['discord_name'].label = 'あなたDiscordの名前 (例: name#0000)'
+        return form
+    
+    def form_valid(self, form):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        instance = form.save()
+        print(instance)
+        schedule.participants.add(instance)
+        return super(Join,self).form_valid(form)
+
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""
     template_name = 'app/month.html'
@@ -121,11 +140,10 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, mixins
     form_class = BS4ScheduleForm
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs) 
         day_calendar_context = self.get_day_calendar()
         week_calendar_context = self.get_week_calendar()
         month_calendar_context = self.get_month_calendar()
-        # print(week_calendar_context)
         context.update(day_calendar_context)
         context.update(week_calendar_context)
         context.update(month_calendar_context)
@@ -156,9 +174,6 @@ class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.Crea
         month_calendar_context = self.get_month_calendar()
         context.update(day_calendar_context)
         context.update(month_calendar_context)
-        if (list(context['day_schedules'].values())) != [[]]:
-            print(list(context['day_schedules'].values()))
-            context['last'] = list(context['day_schedules'].values())[0][-1]
         return context
 
     def form_valid(self, form):

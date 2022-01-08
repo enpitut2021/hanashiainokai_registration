@@ -10,106 +10,71 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/index.css">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>Welcome to Siketai!!</h1>
-        <div class="content-box">
-            <h1> DiscordのURL</h1>
-            <p><a href="https://discord.gg/UhVZwKys2H" target="_new">ここをクリック！</a></p>
+        <div class="container mt-3">
+            <h1>シケタイへようこそ！</h1>
         </div>
         <div class="content-box">
-            <h1>作業会確認カレンダー</h1>
-            <p><a href="{% url 'mycalendar' %}?{{ user.username }}">こちらから日程を登録</a></p>
+            <div class="container mt-3">
+                <h2> シケタイサーバー@Discord</h1>
+            </div>
+            <p><a href="https://discord.gg/UhVZwKys2H" target="_new">こちらからシケタイのDiscordサーバーに参加</a></p>
         </div>
-        {% comment %} <div class="content-box"> {% endcomment %}
-            <img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/intro1.png" style = "display: block; margin: auto; width: 1000px;">
-        {% comment %} </div> {% endcomment %}
-        {% comment %} <div class="content-box"> {% endcomment %}
-            <img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/intro2.png" style = "display: block; margin: auto; width: 1000px;">
-        {% comment %} </div> {% endcomment %}
-        {% comment %} <h2>概要</h2>
-        <div class="box30">
-            <div class="box-title">シケタイについて</div>
-            <p>サーバー本体とサーバー内に存在する『@sensei』という名前のbotがあなたの集団作業をサポートします</p>
+        <div class="content-box">
+            <div class="container mt-3">
+                <h2>勉強会確認カレンダー</h1>
+            </div>
+            <p><a href="{% url 'mycalendar' %}?{{ user.username }}">こちらから勉強会を登録</a></p>
         </div>
-        <h2>次のような機能がご利用いただけます</h2>
-        <div class="box30">
-            <div class="box-title">サーバー本体に搭載されている機能</div>
-            <p>あなたがGoogleカレンダーに入力した作業会の予定を全体にリマインドしてくれます</p>
+        <div class="container mt-3 mb-5">
+        <img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/intro1.png"
+        style = "display: block; margin: auto; width: 1000px;"
+        class = "image-vw">
+        <img src="https://raw.githubusercontent.com/enpitut2021/hanashiainokai_registration/main/app/templates/app/images/intro2.png"
+        style = "display: block; margin: auto; width: 1000px;"
+        class = "image-vw">
         </div>
-        <div class="box30">
-            <div class="box-title">bot『@sensei』に搭載されている機能</div>
-            <p>タイマーを設定して作業時間、休憩時間、終了時間を時間管理することができます</p>
-            <p>ファイル共有へのURLが表示され、参加者でファイルの共有をすることができます</p>
-        </div>
-
-        <div class="box30">
-        <div class="box-title">bot『@sensei』使用方法</div>
-        <p>
-            チャット欄にて『@sensei
-            コマンド名』とメンションをすることでさまざまな機能をご利用いただけます。
-        </p>
-        <table>
-            <tr>
-            <th>コマンド</th>
-            <th>機能</th>
-            </tr>
-            <tr>
-            <td><pre>@sensei help</pre></td>
-            <td>使用可能なコマンド一覧と簡単な説明を教えてくれます。</td>
-            </tr>
-            <tr>
-            <td><pre>@sensei helpall</pre></td>
-            <td>使用可能なコマンド一覧と詳細な説明を教えてくれます。</td>
-            </tr>
-            <tr>
-            <td><pre>@sensei starttimer</pre></td>
-            <td>
-                勉強＆休憩の繰り返しをタイマーが通知して支援してくれるコマンドです。
-            </td>
-            </tr>
-            <tr>
-            <td><pre>@sensei stoptimer</pre></td>
-            <td>
-                必要がなくなったタイマーを停止するコマンドです。オプションでタイマーのIDを指定する必要があります。
-            </td>
-            </tr>
-            <tr>
-            <td><pre>@sensei share</pre></td>
-            <td>
-                シケタイ用のファイル共有URLを教えてくれます。このGoogleDriveのURLをクリックするとだれでもファイルをダウンロード、アップロードすることができます。
-            </td>
-            </tr>
-            <tr>
-            <td><pre>@sensei nokori</pre></td>
-            <td>指定した時間まであと残り何分か教えてくれるコマンドです。</td>
-            </tr>
-            <tr>
-            <td><pre>@sensei pomodoro</pre></td>
-            <td>
-                「ポマドーロテクニック」25分間の勉強,5分間の休憩の繰り返しを助けてくれるコマンドです。
-            </td>
-            </tr>
-        </table>
-        </div> {% endcomment %}
     </body>
     <style>
-        h1{
+        body {
+            background-color: #fff;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attatchment: fixed;
+        }
+        h1 {
+            margin-top: 0;
+            padding: 10px;
+            font-size: 35px;
+            background-color: #00ced1;
+            color: #fff;
             text-align: center;
+            box-shadow: 0 1px 8px #777;
+            text-shadow: 1px 1px 1px #777;
+        }
+        h2 {
+            text-align: center;
+        }
+        img {
+            box-shadow: 0 1px 8px #777;
         }
         .content-box {
-        padding: 0.5em 1em;
-        margin: 2em 20%;
-        font-weight: bold;
-        color: #000000;
-        background: #EEEEEE;
-        border: solid 1px #000000;
-        border-radius: 10px;
+            padding: 0.5em 1em;
+            margin: 2em 20%;
+            font-weight: bold;
+            color: #000000;
+            background: #f5f5f5;
+            box-shadow: 0 1px 8px #777;
+            text-shadow: 0.5px 0.5px 0.5px #777;
         }
         .content-box p{
-            text-align: center;
-        }
-        h2{
             text-align: center;
         }
         .box30 {
@@ -133,6 +98,9 @@ and open the template in the editor.
         }
         .calendar{
             text-align: center;
+        }
+        .image-vw {
+            max-width: 100%;
         }
         
     </style>

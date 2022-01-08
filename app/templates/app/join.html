@@ -1,13 +1,13 @@
 {% extends 'app/base.html' %}
 {% block content %}
     <div class="container mt-3">
-        <h1>予定を削除する</h1>
+        <h1>勉強会に参加</h1>
     </div>
     <div class="container mt-3">
-        <form action="{% url 'delete' schedule.pk %}" method="post">
+        <form method="post" novalidate>
             {% csrf_token %}
-            <p>本当に予定を削除してもよろしいですか？</p>
-            <input type="submit" value="はい" />
+            {{ form.as_p }}
+            <input type="submit" value="確定">
             <input type="button" onclick="location.href='{% url 'mycalendar' %}'" value="戻る">
         </form>
     </div>

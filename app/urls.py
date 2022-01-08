@@ -21,4 +21,5 @@ urlpatterns = [
     path('month_with_schedule/',views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
     path('month_with_schedule/<int:year>/<int:month>/',views.MonthWithScheduleCalendar.as_view(), name='month_with_schedule'),
     path('search/', views.ScheduleList.as_view(), name='search'),
+    path('join/<int:pk>', views.Join.as_view(), name='join'),
 ]

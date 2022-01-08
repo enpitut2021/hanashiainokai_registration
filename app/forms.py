@@ -47,7 +47,7 @@ class BS4ScheduleForm(forms.ModelForm):
 
     class Meta:
         model = Schedule
-        fields = ('summary', 'description', 'start_time', 'end_time', 'room')
+        fields = ('summary', 'description', 'start_time', 'end_time', 'room', 'creator')
 
         widgets = {
             'summary': forms.TextInput(attrs={
@@ -61,6 +61,13 @@ class BS4ScheduleForm(forms.ModelForm):
             }),
             'end_time': forms.TextInput(attrs={
                 'class': 'form-control',
+            }),            
+            'room': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'creator': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'name#0000'
             }),
         }
 

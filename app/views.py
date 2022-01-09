@@ -106,7 +106,6 @@ class Join(CreateView):
     def form_valid(self, form):
         schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
         instance = form.save()
-        print(instance)
         schedule.participants.add(instance)
         return super(Join,self).form_valid(form)
 

@@ -4,11 +4,11 @@
         <h1>予定を削除する</h1>
     </div>
     <div class="container mt-3">
-        <form action="{% url 'delete' schedule.pk %}" method="post">
+        <form method="post">
             {% csrf_token %}
             <p>本当に予定を削除してもよろしいですか？</p>
-            <input type="submit" value="はい" />
-            <input type="button" onclick="location.href='{% url 'mycalendar' %}'" value="戻る">
+            <button type="submit" class="btn btn-danger btn-block">はい</button>
+            <button type="button" class="btn btn-secondary btn-block" onClick="javascript:history.go(-1);">戻る</button>
         </form>
     </div>
 {% endblock %}

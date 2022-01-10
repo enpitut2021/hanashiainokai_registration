@@ -1,8 +1,9 @@
 {% extends 'app/base.html' %}
+{% load cut_re %}
 {% block content %}
     <div class="container mt-3" id="schedules">
         <div class = "container mt-3">
-          <input type="button" onclick="location.href='{% url 'mycalendar' %}'" value="戻る">
+          <btn type="button" class="btn btn-secondary btn-block" onClick="javascript:history.go(-1);">戻る</button>
         </div>
         <div class = "container mt-3">
           <input class="search p-3 flex-1" placeholder="Search" />
@@ -17,19 +18,19 @@
                 <th class="start_time">開始時間</th>
                 <th class="end_time">終了時間</th>
                 <th class="room">勉強部屋</th>
-                <th class="creator">作成者</th>
+                <th class="creator">主催者</th>
               </tr>
            </thead>
            <tbody class="list">
               {% for schedule in object_list %}
                 <tr>
                   <td class="date"><a href="{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}">{{ schedule.date|date:"Y年m月d日" }}</a></td>
-                  <td class="summary">{{ schedule.summary }}</td>
+                  <td class="summary"><a href="{% url 'detail' schedule.id %}">{{ schedule.summary }}</td>
                   <td class="description">{{ schedule.description }}</td>
                   <td class="start_time">{{ schedule.start_time|date:"G:i" }}</td>
                   <td class="end_time">{{ schedule.end_time|date:"G:i" }}</td>
-                  <td class="room">{{ schedule.room }}</td>
-                  <td class="creator">{{ schedule.creator }}</td>
+                  <td class="room">勉強部屋{{ schedule.room }}</td>
+                  <td class="creator">{{ schedule.creator|cut_re:'#[0-9]{4}$' }}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -54,7 +55,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script> 
 <script>
 var options = {
-  valueNames: [ 'date', 'summary', 'description', 'start_time', 'end_time', 'room' ]
+  valueNames: [ 'date', 'summary', 'description', 'start_time', 'end_time', 'room', 'creator' ]
 }; 
 var scheduleList = new List('schedules', options);
 scheduleList.sort( 'date', {order : 'desc' });

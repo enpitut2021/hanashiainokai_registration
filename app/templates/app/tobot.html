@@ -10,7 +10,7 @@
                         "room": "{{ s.room }}",
                         "participants": ["{{ s.creator }}"
                         {% for participant in s.participants.all %}
-                            , "{{ participant }}"                            
+                            , "{{ participant }}"
                         {% endfor %}
                         ]
                     }

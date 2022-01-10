@@ -14,8 +14,8 @@ class Discord_User(models.Model):
 class Schedule(models.Model):
     """スケジュール"""
 #    Schedule_id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False) #独立のidを作る
-    summary = models.CharField('概要', max_length=50)
-    description = models.TextField('詳細な説明', blank=True)
+    summary = models.CharField('勉強会名', max_length=50)
+    description = models.TextField('説明', blank=True)
     start_time = models.TimeField('開始時間', default=datetime.time(7, 0, 0))
     end_time = models.TimeField('終了時間', default=datetime.time(7, 0, 0))
     room = models.CharField('勉強部屋', max_length=1)

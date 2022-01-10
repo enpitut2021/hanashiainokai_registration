@@ -2,14 +2,15 @@
 {{ week_first | date:"Y年m月d日" }}〜{{ week_last | date:"Y年m月d日" }}
 <a href="{% url 'mycalendar' week_next.year week_next.month  week_next.day %}">次週</a>
 
-<table class="table table-bordered", style="table-layout: fixed;">
+<div class="table-responsive">
+<table class="table table_sticky" style="table-layout: fixed;">
     <thead>
         <tr>
             {% for day in week_days %}
                 {% if date == day %}
                     <th scope="col" class="table-success">
                         {% else %}
-                    <th scope="col">
+                    <th scope="col" class="table-light">
                 {% endif %}
                 {% if week_first.month != day.month %}
                     {{ day | date:"m/d" }}
@@ -26,14 +27,14 @@
                 <td>
                     {% for s in schedules|dictsort:"start_time" %}                    
                         {{ s.start_time|date:"G:i" }} - {{ s.end_time|date:"G:i" }}<br>
-                        {{ s.summary }}<br>
+                        【{{ s.summary }}】<br>
                         {% if s.description%}
-                            {{ s.description}}<br>
+                            <i>{{ s.description}}</i><br>
                         {% endif %}
-                        勉強部屋{{ s.room }}<br>
-                        {{ s.creator }}<br>
-                        <a href="{% url 'join' s.id %}">参加する</a><br>
-                        <a href="{% url 'delete' s.id %}">削除</a><br>
+                        @勉強部屋{{ s.room }}<br>
+                        参加者{{ s.participants.all.count|add:"1" }}名<br>
+                        <a href="{% url 'detail' s.id %}">詳細</a><br>
+                        <a href="{% url 'join' s.id %}">参加</a><br>
                         {% if not forloop.last %}
                             <hr/>
                         {% endif %}
@@ -43,3 +44,20 @@
         </tr>
     </tbody>
 </table>
+</div>
+<style>
+    .table_sticky {
+        overflow-y: scroll;
+        display:block;
+        height: 800px;
+        width: 965px;
+        word-break: break-all;
+        word-wrap: break-all;
+    }
+    .table_sticky th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        width:138px;
+    }
+</style>

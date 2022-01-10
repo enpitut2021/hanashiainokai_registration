@@ -4,11 +4,14 @@
         <h1>勉強会に参加</h1>
     </div>
     <div class="container mt-3">
+        事前に勉強会へ参加表明することで、Discord上で開始前通知を受け取ることができます。
+    </div>
+    <div class="container mt-3">
         <form method="post" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="確定">
-            <input type="button" onclick="location.href='{% url 'mycalendar' %}'" value="戻る">
+            <button type="submit" class="btn btn-primary btn-block">確定</button>
+            <button type="button" class="btn btn-secondary btn-block" onClick="location.href='{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}'">戻る</button>
         </form>
     </div>
 {% endblock %}

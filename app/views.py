@@ -1,7 +1,7 @@
 from json import encoder
 from django.contrib.auth.models import User
 
-from .forms import RegistrationForm, LoginForm
+from .forms import BS4ScheduleForm_edit, RegistrationForm, LoginForm
 
 from django.db.models import Q
 
@@ -89,14 +89,23 @@ class delete_schedule(DeleteView):
     model = Schedule
 
     date = datetime.date.today()
-    success_url = reverse_lazy('mycalendar')
 
+    def get_success_url(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        date = schedule.date
+        return reverse('mycalendar', kwargs={'year':date.year, 'month':date.month, 'day':date.day})
+    
 class Join(CreateView):
     template_name = 'app/join.html'
     model = Discord_User
     fields = ['discord_name']
- 
-    success_url = reverse_lazy('mycalendar')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        context['schedule'] = schedule
+        print(context)
+        return context    
  
     def get_form(self):
         form = super(Join, self).get_form()
@@ -108,6 +117,35 @@ class Join(CreateView):
         instance = form.save()
         schedule.participants.add(instance)
         return super(Join,self).form_valid(form)
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse('detail', kwargs={'pk':pk})
+
+class Detail(DetailView):
+    template_name = 'app/detail.html'
+    model = Schedule
+
+class Update(UpdateView):
+    template_name = 'app/edit.html'
+    model = Schedule
+    date_field = 'date'
+    form_class = BS4ScheduleForm_edit
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)        
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        context['schedule'] = schedule
+        context['edit_form'] = BS4ScheduleForm_edit
+        return context
+ 
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.object.pk})
+    
+    def form_valid(self, form):
+        schedule = form.save(commit=False)
+        schedule.save()
+        return redirect('detail', pk=schedule.id)
 
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""

@@ -1,0 +1,37 @@
+{% extends 'app/base.html' %}
+{% load cut_re %}
+{% block content %}
+    <div class="container mt-3">
+        <h1>詳細</h1>
+    </div>
+    <div class="container mt-3">
+        <table class="table">
+            <tr>
+                <th scope="row">日時</th>
+                <th scope="row">勉強会名</th>
+                <th scope="row">詳細</th>
+                <th scope="row">開催場所</th>
+                <th scope="row">作成者</th>
+                <th scope="row">参加人数 (作成者含)</th>
+            </tr>
+            <tr>
+                <td>{{ schedule.date|date:"Y年m月d日" }} {{ schedule.start_time|date:"G:i" }}~{{ schedule.end_time|date:"G:i" }}</td>
+                <td>{{ schedule.summary }}</td>
+                {% if schedule.description %}
+                    <td>{{ schedule.description }}</td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+                <td>勉強部屋{{ schedule.room }}</td>
+                <td>{{ schedule.creator|cut_re:'#[0-9]{4}$' }}</td>
+                <td>{{ schedule.participants.all.count|add:"1" }}名</td>
+            </tr>
+        </table>
+    </div>
+    <div class = "container mt-3">
+        <button type="button" class="btn btn-primary btn-block" onClick="location.href='{% url 'join' schedule.id %}'">参加</button>
+        <button type="button" class="btn btn-success btn-block" onClick="location.href='{% url 'edit' schedule.id %}'">編集</button>
+        <button type="button" class="btn btn-danger btn-block" onClick="location.href='{% url 'delete' schedule.id %}'">削除</button>
+        <button type="button" class="btn btn-secondary btn-block" onClick="location.href='{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}'">戻る</button>
+    </div>
+{% endblock %}

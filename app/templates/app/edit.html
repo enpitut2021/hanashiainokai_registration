@@ -1,4 +1,5 @@
 {% extends 'app/base.html' %}
+{% block title %}{{ schedule.summary }} | {{ block.super }}{% endblock title %}
 {% load static %}
 {% block content %}
     <div class="container mt-3">
@@ -16,8 +17,8 @@
                 </br>
                 {% endfor %}
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-block">送信</button>
-                <button type="button" class="btn btn-secondary btn-block" onclick="location.href='{% url 'detail' schedule.id %}'">戻る</button>
+                <button type="submit" class="btn btn-outline-primary btn-block">送信</button>
+                <button type="button" class="btn btn-outline-secondary btn-block" onclick="location.href='{% url 'detail' schedule.id %}'">戻る</button>
             <br></br>
             </form>
     </div>

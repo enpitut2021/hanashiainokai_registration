@@ -1,4 +1,5 @@
 {% extends 'app/base.html' %}
+{% block title %}{{ schedule.summary }} | {{ block.super }}{% endblock title %}
 {% block content %}
     <div class="container mt-3">
         <h1>予定を削除する</h1>
@@ -7,8 +8,8 @@
         <form method="post">
             {% csrf_token %}
             <p>本当に予定を削除してもよろしいですか？</p>
-            <button type="submit" class="btn btn-danger btn-block">はい</button>
-            <button type="button" class="btn btn-secondary btn-block" onClick="javascript:history.go(-1);">戻る</button>
+            <button type="submit" class="btn btn-outline-danger btn-block">はい</button>
+            <button type="button" class="btn btn-outline-secondary btn-block" onClick="javascript:history.go(-1);">戻る</button>
         </form>
     </div>
 {% endblock %}

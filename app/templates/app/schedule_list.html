@@ -1,9 +1,10 @@
 {% extends 'app/base.html' %}
+{% block title %}検索 | {{ block.super }}{% endblock title %}
 {% load cut_re %}
 {% block content %}
     <div class="container mt-3" id="schedules">
         <div class = "container mt-3">
-          <btn type="button" class="btn btn-secondary btn-block" onClick="javascript:history.go(-1);">戻る</button>
+          <btn type="button" class="btn btn-outline-secondary btn-block" onClick="javascript:history.go(-1);">戻る</button>
         </div>
         <div class = "container mt-3">
           <input class="search p-3 flex-1" placeholder="Search" />

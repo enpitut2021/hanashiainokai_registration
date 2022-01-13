@@ -1,9 +1,9 @@
 {% extends 'app/base.html' %}
+{% block title %}カレンダー | {{ block.super }}{% endblock title %}
 {% block content %}
     <div class="row">
         <div class="col-md-3">
             {% include 'app/includes/month.html' %}
-            <hr>
             <form action="" method="POST">
                 {{ form.non_field_errors }}
                 {% for field in form %}
@@ -18,7 +18,7 @@
                 </br>
                 {% endfor %}
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-block">送信</button>
+                <button type="submit" class="btn btn-outline-primary btn-block">送信</button>
             <br></br>
             </form>
         </div>

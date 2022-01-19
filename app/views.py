@@ -109,7 +109,7 @@ class Join(CreateView):
  
     def get_form(self):
         form = super(Join, self).get_form()
-        form.fields['discord_name'].label = 'あなたDiscordの名前 (例: name#0000)'
+        form.fields['discord_name'].label = 'あなたのDiscordの名前 (例: name#0000)'
         return form
     
     def form_valid(self, form):

@@ -11,7 +11,7 @@
         <iframe src="https://www.facebook.com/plugins/share_button.php?href={{ request.scheme }}://{{ request.get_host }}{% url 'detail' schedule.id %}&layout=button&size=small&width=69&height=20&appId" width="69" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         <div class="line-it-button" data-lang="ja" data-type="share-a" data-env="REAL" data-url={{ request.scheme }}://{{ request.get_host }}{% url 'detail' schedule.id %} data-color="default" data-size="small" data-count="false" data-ver="3" style="display: none;"></div>
         <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-        <button type="button" class="btn btn-sm btn-secondary h-mod" onClick="copyUrlTitle()">コピー</button>
+        <button type="button" class="btn btn-sm btn-secondary h-mod" onClick="copyUrlTitle()">クリップボードにコピー</button>
     </div>
     <div class="container mt-3">
         <table class="table">

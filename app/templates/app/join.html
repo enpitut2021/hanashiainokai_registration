@@ -11,8 +11,8 @@
         <form method="post" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary btn-block">確定</button>
-            <button type="button" class="btn btn-secondary btn-block" onClick="location.href='{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}'">戻る</button>
+            <button type="submit" class="btn btn-outline-primary btn-block">確定</button>
+            <button type="button" class="btn btn-outline-secondary btn-block" onClick="location.href='{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}'">戻る</button>
         </form>
     </div>
 {% endblock %}

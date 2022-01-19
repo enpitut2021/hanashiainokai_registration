@@ -36,11 +36,11 @@
                 <td>勉強部屋{{ schedule.room }}</td>
             </tr>
             <tr>
-                <th scope="row" class="align-middle">作成者</th>
+                <th scope="row" class="align-middle">主催者</th>
                 <td>{{ schedule.creator|cut_re:'#[0-9]{4}$' }}</td>
             </tr>
             <tr>
-                <th scope="row" class="align-middle">参加人数 (作成者含)</th>
+                <th scope="row" class="align-middle">参加人数 (主催者含)</th>
                 <td>{{ schedule.creator|cut_re:'#[0-9]{4}$' }}<br>
                     {% for participant in schedule.participants.all %}
                         {{ participant.discord_name|cut_re:'#[0-9]{4}$' }}<br>

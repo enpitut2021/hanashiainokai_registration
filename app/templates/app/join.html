@@ -1,0 +1,18 @@
+{% extends 'app/base.html' %}
+{% block title %}{{ schedule.summary }} | {{ block.super }}{% endblock title %}
+{% block content %}
+    <div class="container mt-3">
+        <h1>勉強会に参加</h1>
+    </div>
+    <div class="container mt-3">
+        事前に勉強会へ参加表明することで、Discord上で開始前通知を受け取ることができます。
+    </div>
+    <div class="container mt-3">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-outline-primary btn-block">確定</button>
+            <button type="button" class="btn btn-outline-secondary btn-block" onClick="location.href='{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}'">戻る</button>
+        </form>
+    </div>
+{% endblock %}

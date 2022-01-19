@@ -1,0 +1,76 @@
+{% extends 'app/base.html' %}
+{% block title %}{{ schedule.summary }} | {{ block.super }}{% endblock title %}
+{% load cut_re %}
+{% block content %}
+    <div class="container mt-3">
+        <h1>詳細</h1>
+    </div>
+    <div class="container colortest mt-3 align-middle">
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="【{{ schedule.summary }}】に参加しましょう！" data-hashtags="シケタイ" data-show-count="false" data-url={{ request.scheme }}://{{ request.get_host }}{% url 'detail' schedule.id %}>Tweet</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <iframe src="https://www.facebook.com/plugins/share_button.php?href={{ request.scheme }}://{{ request.get_host }}{% url 'detail' schedule.id %}&layout=button&size=small&width=69&height=20&appId" width="69" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        <div class="line-it-button" data-lang="ja" data-type="share-a" data-env="REAL" data-url={{ request.scheme }}://{{ request.get_host }}{% url 'detail' schedule.id %} data-color="default" data-size="small" data-count="false" data-ver="3" style="display: none;"></div>
+        <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+        <button type="button" class="btn btn-sm btn-secondary h-mod" onClick="copyUrlTitle()">クリップボードにコピー</button>
+    </div>
+    <div class="container mt-3">
+        <table class="table">
+            <tr>
+                <th scope="row" class="align-middle">日時</th>
+                <td>{{ schedule.date|date:"Y年m月d日" }} {{ schedule.start_time|date:"G:i" }}~{{ schedule.end_time|date:"G:i" }}</td>
+            </tr>
+            <tr>
+                <th scope="row" class="align-middle">勉強会名</th>
+                <td>{{ schedule.summary }}</td>
+            </tr>
+            <tr>
+                <th scope="row" class="align-middle">詳細</th>
+                {% if schedule.description %}
+                    <td>{{ schedule.description }}</td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th scope="row" class="align-middle">開催場所</th>
+                <td>勉強部屋{{ schedule.room }}</td>
+            </tr>
+            <tr>
+                <th scope="row" class="align-middle">主催者</th>
+                <td>{{ schedule.creator|cut_re:'#[0-9]{4}$' }}</td>
+            </tr>
+            <tr>
+                <th scope="row" class="align-middle">参加人数 (主催者含)</th>
+                <td>{{ schedule.creator|cut_re:'#[0-9]{4}$' }}<br>
+                    {% for participant in schedule.participants.all %}
+                        {{ participant.discord_name|cut_re:'#[0-9]{4}$' }}<br>
+                    {% endfor %}
+                    [計{{ schedule.participants.all.count|add:"1" }}名]</td>
+            </tr>
+        </table>
+    </div>
+    <div class = "container mt-3">
+        <button type="button" class="btn btn-outline-primary btn-block" onClick="location.href='{% url 'join' schedule.id %}'">参加</button>
+        <button type="button" class="btn btn-outline-success btn-block" onClick="location.href='{% url 'edit' schedule.id %}'">編集</button>
+        <button type="button" class="btn btn-outline-danger btn-block" onClick="location.href='{% url 'delete' schedule.id %}'">削除</button>
+        <button type="button" class="btn btn-outline-secondary btn-block" onClick="location.href='{% url 'mycalendar' schedule.date.year schedule.date.month schedule.date.day %}'">戻る</button>
+    </div>
+    <style>
+        .h-mod {
+            padding-top: 0 !important;
+            padding-bottom: 3px !important;
+            margin-bottom: 11px !important;
+            height: 20px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+    function copyUrlTitle() {
+        var url = location.href;
+        var title = document.title;
+        navigator.clipboard.writeText("【" + title.replace(' | シケタイ', '') + "】に参加しましょう！ " + url);
+      }
+    </script>
+{% endblock %}

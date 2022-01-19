@@ -1,7 +1,7 @@
 from json import encoder
 from django.contrib.auth.models import User
 
-from .forms import RegistrationForm, LoginForm
+from .forms import BS4ScheduleForm_edit, RegistrationForm, LoginForm
 
 from django.db.models import Q
 
@@ -22,10 +22,10 @@ import datetime
 from django.shortcuts import redirect, render
 from django.views import generic
 from .forms import BS4ScheduleForm, SimpleScheduleForm
-from .models import Schedule
+from .models import Discord_User, Schedule
 from . import mixins
 
-from django.http.response import JsonResponse
+from operator import attrgetter
 
 def login_user(request):
     params = {
@@ -40,7 +40,7 @@ def login_user(request):
         password2 = base64.b64encode(password.encode())
         if user is not None:
             login(request, user)
-            return redirect('index', username=username2, password=password2)
+            return redirect('index')
         else:
             params['login_form'].add_error(None, "ユーザ名またはパスワードが異なります")
             return render(request, 'app/login.html', params)
@@ -62,22 +62,22 @@ def registration_user(request):
         return redirect('login')
     return render(request, 'app/registration.html', params)
 
-def index(request, username, password):
-    username_index = username.split("'")
-    username = username_index[1]
-    username3 = base64.b64decode(username).decode()
+def index(request):
+    # username_index = username.split("'")
+    # username = username_index[1]
+    # username3 = base64.b64decode(username).decode()
 
-    password_index = password.split("'")
-    password = password_index[1]
-    password3 = base64.b64decode(password).decode()
+    # password_index = password.split("'")
+    # password = password_index[1]
+    # password3 = base64.b64decode(password).decode()
 
-    user = authenticate(username=username3, password=password3)
-    params = {
-        'user': user,
-    }
-    if user is None:
-        return redirect('login')
-    return render(request, 'app/index.html', params)
+    # user = authenticate(username=username3, password=password3)
+    # params = {
+    #     'user': user,
+    # }
+    # if user is None:
+    #     return redirect('login')
+    return render(request, 'app/index.html')
 
 def logout(request):
     django_logout(request)
@@ -89,7 +89,63 @@ class delete_schedule(DeleteView):
     model = Schedule
 
     date = datetime.date.today()
-    success_url = reverse_lazy('mycalendar')
+
+    def get_success_url(self):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        date = schedule.date
+        return reverse('mycalendar', kwargs={'year':date.year, 'month':date.month, 'day':date.day})
+    
+class Join(CreateView):
+    template_name = 'app/join.html'
+    model = Discord_User
+    fields = ['discord_name']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        context['schedule'] = schedule
+        print(context)
+        return context    
+ 
+    def get_form(self):
+        form = super(Join, self).get_form()
+        form.fields['discord_name'].label = 'あなたのDiscordの名前 (例: name#0000)'
+        return form
+    
+    def form_valid(self, form):
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        instance = form.save()
+        schedule.participants.add(instance)
+        return super(Join,self).form_valid(form)
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse('detail', kwargs={'pk':pk})
+
+class Detail(DetailView):
+    template_name = 'app/detail.html'
+    model = Schedule
+
+class Update(UpdateView):
+    template_name = 'app/edit.html'
+    model = Schedule
+    date_field = 'date'
+    form_class = BS4ScheduleForm_edit
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)        
+        schedule = get_object_or_404(Schedule, pk=self.kwargs['pk'])
+        context['schedule'] = schedule
+        context['edit_form'] = BS4ScheduleForm_edit
+        return context
+ 
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.object.pk})
+    
+    def form_valid(self, form):
+        schedule = form.save(commit=False)
+        schedule.save()
+        return redirect('detail', pk=schedule.id)
 
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""
@@ -113,7 +169,7 @@ class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateV
         context.update(calendar_context)
         return context
 
-class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generic.CreateView):
+class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, mixins.DayWithScheduleMixin, generic.CreateView):
     """月間カレンダー、週間カレンダー、スケジュール登録画面のある欲張りビュー"""
     template_name = 'app/mycalendar.html'
     model = Schedule
@@ -121,9 +177,11 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
     form_class = BS4ScheduleForm
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs) 
+        day_calendar_context = self.get_day_calendar()
         week_calendar_context = self.get_week_calendar()
         month_calendar_context = self.get_month_calendar()
+        context.update(day_calendar_context)
         context.update(week_calendar_context)
         context.update(month_calendar_context)
         return context
@@ -153,7 +211,6 @@ class ToBot(mixins.MonthCalendarMixin, mixins.DayWithScheduleMixin, generic.Crea
         month_calendar_context = self.get_month_calendar()
         context.update(day_calendar_context)
         context.update(month_calendar_context)
-        context['last'] = list(context['day_schedules'].values())[0][-1]
         return context
 
     def form_valid(self, form):
@@ -190,3 +247,6 @@ class MonthWithScheduleCalendar(mixins.MonthWithScheduleMixin, generic.TemplateV
         calendar_context = self.get_month_calendar()
         context.update(calendar_context)
         return context
+
+class ScheduleList(ListView):
+    model = Schedule

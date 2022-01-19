@@ -2,14 +2,19 @@
     "{{ date|date:"Y.m.d" }}": [
         {% for schedules in day_schedules.values %}
             {% for s in schedules %}
-                {
-                    "summary": "{{ s.summary }}", 
-                    "description": "{{ s.description }}",
-                    "start_time": "{{ s.start_time|date:"G:i" }}",
-                    "end_time": "{{ s.end_time|date:"G:i" }}",
-                    "room": "{{ s.room }}"
-                }
-                {% if s != last %}
+                    {
+                        "summary": "{{ s.summary }}", 
+                        "description": "{{ s.description }}",
+                            "start_time": "{{ s.start_time|date:"G:i" }}",
+                        "end_time": "{{ s.end_time|date:"G:i" }}",
+                        "room": "{{ s.room }}",
+                        "participants": ["{{ s.creator }}"
+                        {% for participant in s.participants.all %}
+                            , "{{ participant }}"
+                        {% endfor %}
+                        ]
+                    }
+                    {% if not forloop.last %}
                     ,
                 {% endif %}
             {% endfor %}

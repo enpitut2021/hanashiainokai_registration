@@ -1,6 +1,7 @@
 <a href="{% url 'mycalendar' month_previous.year month_previous.month month_previous.day %}">前月</a>
 {{ month_current | date:"Y年m月" }}
 <a href="{% url 'mycalendar' month_next.year month_next.month month_next.day %}">次月</a>
+<a href="{% url 'mycalendar' %}">今日</a>
 
 <table class="table" style="table-layout: fixed;">
     <thead>
@@ -14,7 +15,7 @@
     {% for week in month_days %}
         <tr>
             {% for day in week %}
-                {% if now == day %}
+                {% if date == day %}
                     <td class="table-success">
                 {% else %}
                     <td>

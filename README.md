@@ -1,4 +1,5 @@
-# hanashiainokai_registration
+# シケタイ: Webハブ
+シケタイの入り口ページ。Discordサーバーに参加したり、カレンダーから勉強会の登録／参加を行えます
 
 ## ローカル環境での実行の仕方
 1. `pip install django`

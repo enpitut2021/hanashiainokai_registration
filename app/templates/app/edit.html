@@ -1,0 +1,52 @@
+{% extends 'app/base.html' %}
+{% block title %}{{ schedule.summary }} | {{ block.super }}{% endblock title %}
+{% load static %}
+{% block content %}
+    <div class="container mt-3">
+            <form action="" method="POST">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    <div class="form-group row">
+                        <label for="{{ field.id_for_label }}"
+                               class="col-sm-4 col-form-label">{{ field.label_tag }}</label>
+                        <div class="col-sm-8">
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    </div>
+                </br>
+                {% endfor %}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary btn-block">送信</button>
+                <button type="button" class="btn btn-outline-secondary btn-block" onclick="location.href='{% url 'detail' schedule.id %}'">戻る</button>
+            <br></br>
+            </form>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ edit_form.media }}
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" 
+href="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.js"></script>
+<script>
+    $(function () {
+        // timedropper
+        $("#id_start_time").timeDropper({
+            format: "H:mm",
+            setCurrentTime: false,
+        });
+        $("#id_end_time").timeDropper({
+            format: "H:mm",
+            setCurrentTime: false,
+        });
+    });
+</script>
+{% endblock %}

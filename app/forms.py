@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import PasswordInput
 from .models import Schedule
+from django.contrib.admin.widgets import AdminDateWidget
 """
 from django.contrib.auth.forms import AuthenticationForm
 """
@@ -39,15 +40,15 @@ class BS4ScheduleForm(forms.ModelForm):
             ('3', '勉強部屋3'),
             ('4', '勉強部屋4'),
             ('5', '勉強部屋5'),
-        ]
-    room = forms.ChoiceField(choices=data, required=True, widget=forms.Select(attrs={
+    ]
+
+    room = forms.ChoiceField(label='勉強部屋', choices=data, required=True, widget=forms.Select(attrs={
                 'class': 'form-control',
-            }))
+    }))
+
     class Meta:
         model = Schedule
-        fields = ('summary', 'description', 'start_time', 'end_time'
-        , 'room'
-        )
+        fields = ('summary', 'description', 'start_time', 'end_time', 'room', 'creator')
 
         widgets = {
             'summary': forms.TextInput(attrs={
@@ -55,12 +56,72 @@ class BS4ScheduleForm(forms.ModelForm):
             }),
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
+                'placeholder': '(省略可)'
             }),
             'start_time': forms.TextInput(attrs={
                 'class': 'form-control',
             }),
             'end_time': forms.TextInput(attrs={
                 'class': 'form-control',
+            }),            
+            'room': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'creator': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'name#0000'
+            }),
+        }
+
+    def clean_end_time(self):
+        start_time = self.cleaned_data['start_time']
+        end_time = self.cleaned_data['end_time']
+        if end_time <= start_time:
+            raise forms.ValidationError(
+                '終了時間は、開始時間よりも後にしてください'
+            )
+        return end_time
+
+class BS4ScheduleForm_edit(forms.ModelForm):
+    """Bootstrapに対応するためのModelForm"""
+    data = [
+            ('','部屋を選択'),
+            ('1', '勉強部屋1'),
+            ('2', '勉強部屋2'),
+            ('3', '勉強部屋3'),
+            ('4', '勉強部屋4'),
+            ('5', '勉強部屋5'),
+    ]
+
+    room = forms.ChoiceField(label='勉強部屋', choices=data, required=True, widget=forms.Select(attrs={
+                'class': 'form-control',
+    }))
+
+    class Meta:
+        model = Schedule
+        fields = ('date', 'summary', 'description', 'start_time', 'end_time', 'room', 'creator')
+
+        widgets = {
+            'date': AdminDateWidget(),
+            'summary': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': '(省略可)'
+            }),
+            'start_time': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'end_time': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),            
+            'room': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'creator': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'name#0000'
             }),
         }
 
